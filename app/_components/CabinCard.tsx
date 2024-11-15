@@ -11,7 +11,7 @@ function CabinCard({ cabin }: { cabin: Cabins }) {
     <div className="flex border-primary-800 border">
       <div className="relative flex-1">
         <Image
-          src={images.at(0)}
+          src={images.at(0) || ""}
           fill
           alt={`${name}`}
           className="object-cover aspect-square border-r border-primary-800"
