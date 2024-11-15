@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 
-function TextExpander({ children }) {
+function TextExpander({ children }: { children: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const displayText: string = isExpanded
+  const displayText = isExpanded
     ? children
     : children.split(' ').slice(0, 40).join(' ') + '...';
 
