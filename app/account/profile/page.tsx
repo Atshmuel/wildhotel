@@ -11,9 +11,9 @@ export const metadata = {
 
 export default async function Page() {
     const session = await auth()
-    if (!session || !session.user) return NotFound()
+    if (!session || !session?.user) return NotFound()
 
-    const guest = await getGuest(session.user.email)
+    const guest = await getGuest(session?.user.email)
 
     return (
         <div>

@@ -3,13 +3,12 @@
 import { revalidatePath } from "next/cache"
 import { auth, signIn, signOut } from "./auth"
 import { serverURL } from "@/config/config"
-import { CustomSession } from "@/types/types"
 import { getBooking, getGuestBookings } from "./data-service"
 import { redirect } from "next/navigation"
 
 export async function updateGuest(formData: FormData) {
     const email = formData?.get("email")
-    const session = await auth() as CustomSession
+    const session = await auth()
     const nationalityInfo = formData?.get("nationality")
     const nationalId = formData?.get("nationalID")
     if (typeof nationalId !== 'string' || typeof nationalityInfo !== 'string') throw new Error("Error, nationality type unknown.")
@@ -18,7 +17,7 @@ export async function updateGuest(formData: FormData) {
     if (!nationalIdRegex) throw new Error('ID is not valid, length should be between 6-12.')
     const [nationality, flag] = nationalityInfo.split('%')
 
-    const res = await fetch(`${serverURL}/guests/${session.user?.guestId}`, {
+    const res = await fetch(`${serverURL}/guests/${session?.user?.guestId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ flag, nationality, nationalId, email })
@@ -28,14 +27,14 @@ export async function updateGuest(formData: FormData) {
 }
 
 export async function updateBooking(formData: FormData) {
-    const session = await auth() as CustomSession
+    const session = await auth()
     const numGuests = formData.get('numGuests')
     let observations = formData.get('observations')
     const bookingId = formData.get('bookingId')
-    if (!session || !session.user) throw new Error('Failed to get user data, therefore prevented delete.')
+    if (!session || !session?.user) throw new Error('Failed to get user data, therefore prevented delete.')
     if (!numGuests || !bookingId || typeof bookingId !== 'string' || typeof observations !== 'string') throw new Error('Missing number of guests or booking id.')
     const { booking } = await getBooking(bookingId)
-    if (booking.guestID !== session.user.guestId) throw new Error('User is not allowed to perform this action.')
+    if (booking.guestID !== session?.user.guestId) throw new Error('User is not allowed to perform this action.')
 
     const res = await fetch(`${serverURL}/bookings/update/${bookingId}`,
         {
@@ -53,9 +52,9 @@ export async function updateBooking(formData: FormData) {
 
 
 export async function deleteBooking(id: string) {
-    const session = await auth() as CustomSession
+    const session = await auth()
     if (!session || !session.user) throw new Error('Failed to get user data, therefore prevented delete.')
-    const bookings = await getGuestBookings(session.user.guestId)
+    const bookings = await getGuestBookings(session.user.guestId!)
     const correctUser = bookings.find(booking => booking._id === id)
     if (!correctUser) throw new Error('User is not allowed to perform this action.')
     const res = await fetch(`${serverURL}/guests/bookings/delete/${id}`, { method: 'DELETE' })
@@ -79,8 +78,8 @@ export async function createBooking(bookingData: {
     cabinPrice: number;
     cabinID: string;
 }, formData: FormData) {
-    const session = await auth() as CustomSession
-    const data = { ...bookingData, numGuests: Number(formData.get('numGuests')), observations: formData.get('observations')?.slice(0, 1000), guestID: session.user?.guestId, extrasPrice: 0, totalPrice: bookingData.cabinPrice, isPaid: false, hasBreakfast: false, status: 'unconfirmed' }
+    const session = await auth()
+    const data = { ...bookingData, numGuests: Number(formData.get('numGuests')), observations: formData.get('observations')?.slice(0, 1000), guestID: session?.user?.guestId, extrasPrice: 0, totalPrice: bookingData.cabinPrice, isPaid: false, hasBreakfast: false, status: 'unconfirmed' }
 
     const res = await fetch(`${serverURL}/bookings/new`,
         {

@@ -1,7 +1,6 @@
 import ReservationsList from "@/app/_components/ReservationsList";
 import { auth } from "@/app/_lib/auth";
 import { getGuestBookings } from "@/app/_lib/data-service";
-import { CustomSession } from "@/types/types";
 import Link from "next/link";
 
 export const metadata = {
@@ -9,9 +8,9 @@ export const metadata = {
 };
 
 export default async function Page() {
-    const session = await auth() as CustomSession
-    if (!session || !session.user) return
-    const bookings = await getGuestBookings(session.user.guestId)
+    const session = await auth()
+    if (!session || !session?.user) return
+    const bookings = await getGuestBookings(session?.user?.guestId)
 
     return (
         <div>

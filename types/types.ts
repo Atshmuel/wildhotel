@@ -62,12 +62,19 @@ export type Settings = {
 }
 
 
-export interface CustomSession extends DefaultSession {
-    user?: User & { guestId: string }
-}
-
 export interface ModalContextType {
     openName: string;
     close: () => void;
     open: (name: string) => void;
+}
+
+declare module "next-auth" {
+    interface Session {
+        user: {
+            name?: string | null;
+            email?: string | null;
+            image?: string | null;
+            guestId?: string;
+        };
+    }
 }

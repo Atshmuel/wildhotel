@@ -75,7 +75,8 @@ export async function createGuest(newGuest: {
   return data
 }
 
-export async function getGuestBookings(guestId: string): Promise<Bookings[] | []> {
+export async function getGuestBookings(guestId: string | undefined): Promise<Bookings[] | []> {
+  if (!guestId) throw new Error("Could not get guest id")
   const res = await fetch(`${serverURL}/guests/bookings/${guestId}`)
   const bookings: Bookings[] | [] = await res.json()
   return bookings

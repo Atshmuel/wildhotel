@@ -28,9 +28,9 @@ export default async function Navigation() {
               href="/account"
               className="hover:text-accent-400 transition-colors flex items-center gap-3"
             >
-              <img src={session.user.image ?? ""} alt={session.user.name ?? ""} referrerPolicy="no-referrer" className="rounded-full h-8" />
+              <img src={session?.user?.image ?? ""} alt={session?.user?.name ?? ""} referrerPolicy="no-referrer" className="rounded-full h-8" />
               <span>
-                {session.user.name?.split(" ").at(0)}&apos;s area
+                {session?.user.name?.split(" ").at(0)}&apos;s area
               </span>
             </Link> : <Link
               href="/account"
