@@ -2,10 +2,6 @@ import { redirect } from "next/navigation";
 import SignInButton from "../_components/SignInButton";
 import { auth } from "../_lib/auth";
 
-export const metadate = {
-  title: "Login"
-}
-
 
 
 export default async function Page() {
@@ -21,3 +17,5 @@ export default async function Page() {
     </div>
   );
 }
+
+
