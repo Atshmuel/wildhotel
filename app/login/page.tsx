@@ -3,8 +3,9 @@ import SignInButton from "../_components/SignInButton";
 import { auth } from "../_lib/auth";
 
 export const metadate = {
-  title: 'Login'
+  title: "Login"
 }
+
 
 
 export default async function Page() {
