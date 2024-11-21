@@ -11,8 +11,8 @@ import { ReservationProvider } from "./_components/ReservationContext";
 
 export const metadata = {
   title: {
-    template: "%s / The Wild Oasis",
-    default: "Welcome / The Wild Oasis",
+    template: "%s / The Galilee Charm",
+    default: "Welcome / The Galilee Charm",
   },
   description:
     "Luxurious cabin hotel, located in the heart of the Italian Dolomites, surrounded by beautiful mountains and dark forests",
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: {
       >
         <Header />
 
-        <div className="flex-1 px-8 py-12 grid">
+        <div className="flex-1 px-4 py-6 md:px-8 md:py-12 grid">
           <main className="max-w-7xl mx-auto w-full">
             <ReservationProvider>
               {children}

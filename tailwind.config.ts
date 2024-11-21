@@ -36,6 +36,32 @@ const config: Config = {
           950: '#382814',
         },
       },
+      keyframes: {
+        slideInRight: {
+          '0%': {
+            transform: 'translateX(100%)',
+            opacity: '0',
+          },
+          '100%': {
+            transform: 'translateX(0)',
+            opacity: '1',
+          },
+        },
+        spin: {
+          '0%': {
+            transform: 'rotate(0)',
+
+          },
+          '100%': {
+            transform: 'rotate(360)',
+
+          },
+        },
+      },
+      animation: {
+        slideInRight: 'slideInRight 0.3s ease-in',
+        spinSlow: 'spin 60s linear infinite',
+      },
     },
   },
   plugins: [],

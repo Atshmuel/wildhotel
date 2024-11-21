@@ -6,23 +6,23 @@ import { useEffect, useState } from "react";
 
 function ImagesGallery({ imgs, name }: { imgs: string[], name: string }) {
     const [currIndex, setCurrIndex] = useState(0)
-
-
-
+    const [hover, setHover] = useState(false)
 
     const handleClick = (direction: number) => {
-        setCurrIndex(prev => (prev + direction) % imgs.length)
+        setCurrIndex(prev => (prev + direction + imgs.length) % imgs.length)
     }
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrIndex((prev) => (prev + 1) % imgs.length);
-        }, 5000);
-        return () => clearInterval(interval);
-    }, [imgs]);
+        if (!hover) {
+            const interval = setInterval(() => {
+                setCurrIndex((prev) => (prev + 1) % imgs.length);
+            }, 5000);
+            return () => clearInterval(interval);
+        }
+    }, [imgs, hover]);
 
     return (
-        <div className="relative scale-[1.15] -translate-x-3 overflow-hidden">
+        <div onTouchStart={() => setHover(!hover)} onTouchEnd={() => setHover(!hover)} onMouseEnter={() => setHover(!hover)} onMouseLeave={() => setHover(!hover)} className="relative md:scale-[1.15] md:-translate-x-3 overflow-hidden">
             <span className="absolute cursor-pointer z-20 right-0 top-1/2 h-10 w-6 backdrop-blur-sm  flex items-center"> <ChevronRightIcon color="white" onClick={() => handleClick(1)} /> </span>
             <span className="absolute cursor-pointer z-20 left-0 top-1/2 h-10 w-6 backdrop-blur-sm  flex items-center "> <ChevronLeftIcon color="white" onClick={() => handleClick(-1)} /> </span>
             <div

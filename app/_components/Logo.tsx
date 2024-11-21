@@ -7,13 +7,13 @@ function Logo() {
     <Link href="/" className="flex items-center gap-4 z-10">
       <Image
         src={logo}
-        height="60"
+        height={50}
+        width={50}
         quality={100}
-        width="60"
-        alt="The Wild Oasis logo"
+        alt="The Galilee Charm logo"
       />
-      <span className="text-xl font-semibold text-primary-100">
-        The Wild Oasis
+      <span className=" [text-shadow:_1px_1px_2px_rgb(0_0_0/_0.8)]  md:text-lg lg:text-xl font-semibold text-primary-100">
+        The Galilee Charm
       </span>
     </Link>
   );

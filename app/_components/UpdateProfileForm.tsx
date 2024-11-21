@@ -5,14 +5,14 @@ import { Guest } from "@/types/types";
 import SubmitBtn from '@/app/_components/SubmitBtn'
 function UpdateProfileForm({ guest, children }: { guest: Guest | undefined, children: ReactElement }) {
 
-    return <form action={updateGuest} className="bg-primary-900 py-8 px-12 text-lg flex gap-6 flex-col">
+    return <form action={updateGuest} className="bg-primary-900 py-4 px-4 md:py-8 md:px-12 text-base md:text-lg flex gap-4 md:gap-6 flex-col">
         <div className="space-y-2">
             <label>Full name</label>
             <input
                 disabled
                 defaultValue={guest?.fullName}
                 name="fullName"
-                className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-400"
+                className="md:px-5 px-2 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-400"
             />
         </div>
 
@@ -21,7 +21,7 @@ function UpdateProfileForm({ guest, children }: { guest: Guest | undefined, chil
             <input
                 disabled
                 defaultValue={guest?.email}
-                className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-400"
+                className="md:px-5 px-2 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-400"
             />
         </div>
 
@@ -42,11 +42,11 @@ function UpdateProfileForm({ guest, children }: { guest: Guest | undefined, chil
             <input
                 name="nationalID"
                 defaultValue={guest?.nationalID}
-                className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
+                className="md:px-5 px-2 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
             />
         </div>
 
-        <div className="flex justify-end items-center gap-6">
+        <div className="flex justify-end items-center">
             <SubmitBtn>Update profile</SubmitBtn>
         </div>
     </form>

@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: { cabinId: string } }) 
         <div className="max-w-6xl mx-auto mt-8">
             <Cabin cabin={cabin} />
             <div>
-                <h2 className="text-5xl font-semibold text-accent-400 text-center mb-10">
+                <h2 className="text-2xl md:text-5xl font-semibold text-accent-400 text-center mb-5 md:mb-10">
                     Reserve {cabin.name} today. Pay on arrival.
                 </h2>
                 <Suspense fallback={<Skeleton type="cards" amount={2} />}>

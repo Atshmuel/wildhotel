@@ -10,7 +10,7 @@ async function Reservations({ cabin }: { cabin: Cabins }) {
 
     const [bookedDates, settings] = await Promise.all([getBookingDatesById(cabin._id), getSettings()])
 
-    return <div className="grid grid-cols-2 border border-primary-800 min-h-[400px] justify-start">
+    return <div className="gap-10 flex flex-col md:grid md:grid-cols-2 border border-primary-800 min-h-[400px] justify-start">
         <DateSelector settings={settings} bookedDates={bookedDates} cabin={cabin} />
         {
             session?.user ?

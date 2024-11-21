@@ -2,14 +2,20 @@
 import { Cabins } from "@/types/types";
 import { useReservation } from "./ReservationContext";
 import { User } from "next-auth";
-import Image from "next/image";
 import { differenceInDays } from "date-fns";
 import { createBooking } from "../_lib/actions";
 import SubmitBtn from "./SubmitBtn";
 import { toUTCDate } from "../_lib/data-service";
+import { ChangeEventHandler, useState } from "react";
 
 function ReservationForm({ cabin, user }: { cabin: Cabins, user: User }) {
   const { range, resetRange } = useReservation()
+  const [lettersCnt, setLettersCnt] = useState(0)
+
+  const handlePress = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setLettersCnt(() => e.target.value.length)
+  }
+
 
   const { maxCapacity, regularPrice, discount, _id: id } = cabin
   const startDate = range?.from
@@ -35,7 +41,7 @@ function ReservationForm({ cabin, user }: { cabin: Cabins, user: User }) {
 
   return (
     <div className='scale-[1]'>
-      <div className='bg-primary-800 text-primary-300 px-16 py-2 flex justify-between items-center'>
+      <div className='bg-primary-800 text-primary-300 px-5 text-sm md:text-base lg:px-16 py-2 flex justify-between items-center'>
         <p>Logged in as</p>
         <div className='flex gap-4 items-center'>
           <img
@@ -48,7 +54,7 @@ function ReservationForm({ cabin, user }: { cabin: Cabins, user: User }) {
         </div>
       </div>
 
-      <form action={handleSubmit} className='bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col'>
+      <form action={handleSubmit} className='bg-primary-900 py-4 px-6 md:py-10 md:px-16 text-base md:text-lg flex gap-5 flex-col'>
         <div className='space-y-2'>
           <label htmlFor='numGuests'>How many guests?</label>
           <select
@@ -68,16 +74,21 @@ function ReservationForm({ cabin, user }: { cabin: Cabins, user: User }) {
           </select>
         </div>
 
-        <div className='space-y-2'>
+        <div className='space-y-2 relative'>
           <label htmlFor='observations'>
             Anything we should know about your stay?
           </label>
           <textarea
+            onChange={handlePress}
+            maxLength={1000}
             name='observations'
             id='observations'
             className='px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm'
             placeholder='Any pets, allergies, special requirements, etc.?'
           />
+          <div className="absolute bottom-2 text-primary-950 right-1 text-sm md:text-base">
+            <span>{1000 - lettersCnt} </span>
+          </div>
         </div>
 
         <div className='flex justify-end items-center'>
