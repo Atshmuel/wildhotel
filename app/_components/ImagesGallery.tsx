@@ -23,8 +23,8 @@ function ImagesGallery({ imgs, name }: { imgs: string[], name: string }) {
 
     return (
         <div onTouchStart={() => setHover(!hover)} onTouchEnd={() => setHover(!hover)} onMouseEnter={() => setHover(!hover)} onMouseLeave={() => setHover(!hover)} className="relative md:scale-[1.15] md:-translate-x-3 overflow-hidden">
-            <span className="absolute cursor-pointer z-20 right-0 top-1/2 h-10 w-6 backdrop-blur-sm  flex items-center"> <ChevronRightIcon color="white" onClick={() => handleClick(1)} /> </span>
-            <span className="absolute cursor-pointer z-20 left-0 top-1/2 h-10 w-6 backdrop-blur-sm  flex items-center "> <ChevronLeftIcon color="white" onClick={() => handleClick(-1)} /> </span>
+            <span className="absolute cursor-pointer z-20 right-0 top-1/2 h-10 w-6 backdrop-blur-sm flex items-center"> <ChevronRightIcon color="white" onClick={() => handleClick(1)} /> </span>
+            <span className="absolute cursor-pointer z-20 left-0 top-1/2 h-10 w-6 backdrop-blur-sm flex items-center "> <ChevronLeftIcon color="white" onClick={() => handleClick(-1)} /> </span>
             <div
                 className="flex transition-transform duration-1000 ease-in-out h-full w-full"
                 style={{
