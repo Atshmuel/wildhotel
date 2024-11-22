@@ -1,7 +1,6 @@
 import CabinCard from "@/app/_components/CabinCard";
 import { getCabinsData } from "@/app/_lib/data-service";
 
-export const revalidate = 1000;
 
 
 async function CabinsList({ filter }: { filter: string }) {
