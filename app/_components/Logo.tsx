@@ -7,8 +7,8 @@ function Logo() {
     <Link href="/" className="flex items-center gap-4 z-10">
       <Image
         src={logo}
-        height={50}
-        width={50}
+        height={55}
+        width={55}
         quality={100}
         alt="The Galilee Charm logo"
       />

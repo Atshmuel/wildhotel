@@ -63,8 +63,8 @@ export async function deleteBooking(id: string) {
 }
 
 
-export async function signInAction() {
-    await signIn('google', { redirectTo: '/account' })
+export async function signInAction(redirectTo: string = '/account') {
+    await signIn('google', { redirectTo })
 }
 
 export async function signOutAction() {

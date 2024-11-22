@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import image1 from '@/public/about-2.webp'
-import image2 from '@/public/about-1.webp'
+import image1 from '@/public/about-1.webp'
+import image2 from '@/public/about-2.webp'
 import { getCabinsData } from "@/app/_lib/data-service";
 
 export const revalidate = 86400;

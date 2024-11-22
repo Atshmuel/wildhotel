@@ -1,16 +1,17 @@
 import Link from "next/link";
+import SignInButton from "./SignInButton";
 
-function LoginMessage() {
+function LoginMessage({ redirectTo }: { redirectTo?: string }) {
   return (
-    <div className='grid bg-primary-800 '>
-      <p className='text-center text-xl py-12 self-center'>
+    <div className='grid bg-primary-800 justify-center py-5 md:py-0'>
+      <p className='text-center text-base md:text-xl py-10 self-center'>
         Please{' '}
-        <Link href='/login' className='underline text-accent-500'>
-          login
-        </Link>{' '}
+
+        login
         to reserve this
         <br /> cabin right now
       </p>
+      <SignInButton redirectTo={redirectTo} />
     </div>
   );
 }

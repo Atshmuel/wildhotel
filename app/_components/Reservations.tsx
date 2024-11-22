@@ -16,7 +16,7 @@ async function Reservations({ cabin }: { cabin: Cabins }) {
             session?.user ?
                 <ReservationForm cabin={cabin} user={session?.user} />
                 :
-                <LoginMessage />
+                <LoginMessage redirectTo={`/cabins/${cabin._id}`} />
 
         }    </div>
 }
