@@ -5,6 +5,8 @@ import { auth, signIn, signOut } from "./auth"
 import { serverURL } from "@/config/config"
 import { getBooking, getGuestBookings } from "./data-service"
 import { redirect } from "next/navigation"
+import { cookies } from "next/headers"
+import { bookingData } from "@/types/types"
 
 export async function updateGuest(formData: FormData) {
     const email = formData?.get("email")
@@ -52,6 +54,7 @@ export async function updateBooking(formData: FormData) {
 
 
 export async function deleteBooking(id: string) {
+    //handle refound
     const session = await auth()
     if (!session || !session.user) throw new Error('Failed to get user data, therefore prevented delete.')
     const bookings = await getGuestBookings(session.user.guestId!)
@@ -60,6 +63,7 @@ export async function deleteBooking(id: string) {
     const res = await fetch(`${serverURL}/guests/bookings/delete/${id}`, { method: 'DELETE' })
     if (!res.ok) throw new Error('Failed to delete, please try again later')
     revalidatePath('/account/reservations')
+    revalidatePath(`/cabins/${id}`)
 }
 
 
@@ -71,30 +75,41 @@ export async function signOutAction() {
     await signOut({ redirectTo: '/' })
 }
 
-export async function createBooking(bookingData: {
-    startDate: Date | undefined;
-    endDate: Date | undefined;
-    numNights: number;
-    cabinPrice: number;
-    cabinID: string;
-}, formData: FormData) {
+    export async function createBooking() {
+    const stripeSID = cookies().get('sId')?.value
     const session = await auth()
-    const data = { ...bookingData, numGuests: Number(formData.get('numGuests')), observations: formData.get('observations')?.slice(0, 1000), guestID: session?.user?.guestId, extrasPrice: 0, totalPrice: bookingData.cabinPrice, isPaid: false, hasBreakfast: false, status: 'unconfirmed' }
+    if(!session?.user.guestId) throw new Error('User must auth first!')
+    const BookingCookieData = cookies().get('bookingData')?.value
+    if(!BookingCookieData) return
+    const data = {...JSON.parse(BookingCookieData),sId:stripeSID,guestID:session.user.guestId}
 
     const res = await fetch(`${serverURL}/bookings/new`,
         {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         })
     if (!res.ok) {
         const { error }: { error: string } = await res.json()
         throw new Error(error)
     }
-    const { message, redirect: navTo }: { message: string, redirect: string } = await res.json()
+    const { message,status }: { message: string, status:boolean } = await res.json()
 
-    revalidatePath(`/cabins/${bookingData.cabinID}`)
+    revalidatePath(`/cabins/${data.cabinID}`)
     revalidatePath(`/account/reservations`)
-    redirect(navTo)
+    return status
+
+}
+
+export async function payment(id: string, quantity: number ,data:bookingData ) {
+    const res = await fetch(`${serverURL}/guests/checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, quantity })
+    })
+    const { sId,redirectTo }: { sId:string,redirectTo: string } = await res.json()
+    cookies().set('sId',sId,{maxAge:120})
+    cookies().set('bookingData',JSON.stringify(data),{maxAge:120})
+    redirect(redirectTo)
 
 }

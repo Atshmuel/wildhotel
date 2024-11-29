@@ -5,7 +5,7 @@ import Filter from "../_components/Filter";
 import ReservationReminder from "../_components/ReservationReminder";
 import Skeleton from "../_components/Skeleton";
 
-export const revalidate = 1000;
+export const revalidate = 86400;
 
 export const metadata = {
   title: "Cabins",

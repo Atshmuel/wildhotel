@@ -3,10 +3,10 @@ import { Cabins } from "@/types/types";
 import { useReservation } from "./ReservationContext";
 import { User } from "next-auth";
 import { differenceInDays } from "date-fns";
-import { createBooking } from "../_lib/actions";
+import { payment, createBooking } from "../_lib/actions";
 import SubmitBtn from "./SubmitBtn";
 import { toUTCDate } from "../_lib/data-service";
-import { ChangeEventHandler, useState } from "react";
+import { useState } from "react";
 
 function ReservationForm({ cabin, user }: { cabin: Cabins, user: User }) {
   const { range, resetRange } = useReservation()
@@ -23,21 +23,34 @@ function ReservationForm({ cabin, user }: { cabin: Cabins, user: User }) {
 
   const numNights = Math.abs(differenceInDays(startDate || "", endDate || ""))
 
-  const cabinPrice = numNights * (regularPrice - discount)
+  const totalPrice = numNights * (regularPrice - discount)
 
   const bookingData = {
     startDate: toUTCDate(startDate!),
     endDate: toUTCDate(endDate!),
     numNights,
-    cabinPrice,
-    cabinID: id
+    totalPrice,
+    cabinID: id,
+    cabinPrice:regularPrice,
+    extrasPrice:0,
+    hasBreakfast:false,
+    isPaid:false,
+    status:'unconfirmed'
   }
 
-  const bindBookingData = createBooking.bind(null, bookingData)
+  // const bindBookingData = createBooking.bind(null, bookingData)
   const handleSubmit = async (formData: FormData) => {
-    await bindBookingData(formData)
+    const data = {...bookingData, 
+      numGuests: Number(formData.get('numGuests')), 
+      observations: formData.get('observations')?.slice(0, 1000)
+    }
+
+    await payment(cabin._id, numNights,data)
+
     resetRange()
   }
+
+
 
   return (
     <div className='scale-[1]'>
@@ -97,6 +110,7 @@ function ReservationForm({ cabin, user }: { cabin: Cabins, user: User }) {
             :
             <SubmitBtn>Reserve now</SubmitBtn>
           }
+
         </div>
       </form>
     </div>

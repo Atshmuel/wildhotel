@@ -78,3 +78,18 @@ declare module "next-auth" {
         };
     }
 }
+
+export interface bookingData{
+    startDate: Date|undefined,
+    endDate: Date|undefined,
+    numNights:number,
+    totalPrice:number,
+    cabinID: string,
+    cabinPrice:number,
+    extrasPrice:number,
+    hasBreakfast:boolean,
+    isPaid:boolean,
+    status:string,
+    numGuests: number,
+    observations: string | Blob | undefined;
+}

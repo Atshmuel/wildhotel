@@ -1,5 +1,6 @@
 import CabinCard from "@/app/_components/CabinCard";
 import { getCabinsData } from "@/app/_lib/data-service";
+import Skeleton from "./Skeleton";
 
 
 
@@ -17,6 +18,7 @@ async function CabinsList({ filter }: { filter: string }) {
     if (filter === 'large') {
         displayedRooms = cabins.filter(cabin => cabin.maxCapacity >= 5)
     }
+    if (!displayedRooms.length) return <Skeleton type="card" amount={6} />
     return <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 xl:gap-14">
         {displayedRooms.map((cabin) => (
             <CabinCard cabin={cabin} key={cabin._id} />
