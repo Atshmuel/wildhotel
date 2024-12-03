@@ -75,13 +75,13 @@ export async function signOutAction() {
     await signOut({ redirectTo: '/' })
 }
 
-    export async function createBooking() {
+export async function createBooking() {
     const stripeSID = cookies().get('sId')?.value
     const session = await auth()
-    if(!session?.user.guestId) throw new Error('User must auth first!')
+    if (!session?.user.guestId) throw new Error('User must auth first!')
     const BookingCookieData = cookies().get('bookingData')?.value
-    if(!BookingCookieData) return
-    const data = {...JSON.parse(BookingCookieData),sId:stripeSID,guestID:session.user.guestId}
+    if (!BookingCookieData) return
+    const data = { ...JSON.parse(BookingCookieData), sId: stripeSID, guestID: session.user.guestId }
 
     const res = await fetch(`${serverURL}/bookings/new`,
         {
@@ -93,7 +93,7 @@ export async function signOutAction() {
         const { error }: { error: string } = await res.json()
         throw new Error(error)
     }
-    const { message,status }: { message: string, status:boolean } = await res.json()
+    const { message, status }: { message: string, status: boolean } = await res.json()
 
     revalidatePath(`/cabins/${data.cabinID}`)
     revalidatePath(`/account/reservations`)
@@ -101,15 +101,17 @@ export async function signOutAction() {
 
 }
 
-export async function payment(id: string, quantity: number ,data:bookingData ) {
+export async function payment(id: string, quantity: number, data: bookingData) {
     const res = await fetch(`${serverURL}/guests/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, quantity })
     })
-    const { sId,redirectTo }: { sId:string,redirectTo: string } = await res.json()
-    cookies().set('sId',sId,{maxAge:120})
-    cookies().set('bookingData',JSON.stringify(data),{maxAge:120})
-    redirect(redirectTo)
+    const session = await res.json()
+    console.log(session);
+    cookies().set('s', session, { maxAge: 120 })
+    cookies().set('sId', session.id, { maxAge: 120 })
+    cookies().set('bookingData', JSON.stringify(data), { maxAge: 120 })
+    redirect(session.url)
 
 }
