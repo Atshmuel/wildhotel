@@ -107,10 +107,13 @@ export async function payment(id: string, quantity: number, data: bookingData) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, quantity })
     })
-    const session = await res.json()
-    console.log(session);
+    if (!res.ok) {
+        const { error }: { error: string } = await res.json()
+        throw new Error(error)
+    }
 
-    cookies().set('s', JSON.stringify(session), { maxAge: 120 })
+    const session = await res.json()
+
     cookies().set('sId', session.id, { maxAge: 120 })
     cookies().set('bookingData', JSON.stringify(data), { maxAge: 120 })
     redirect(session.url)
