@@ -93,3 +93,11 @@ export interface bookingData{
     numGuests: number,
     observations: string | Blob | undefined;
 }
+
+export interface CustomBtnProps {
+    type?: string;
+    disabled?: boolean;
+    onClick?: () => void;
+    children: React.ReactElement | string;
+  }
+  
