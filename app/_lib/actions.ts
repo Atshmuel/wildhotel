@@ -101,20 +101,20 @@ export async function createBooking() {
 
 }
 
-export async function payment(id: string, quantity: number, data: bookingData) {
+export async function payment(id: string, quantity: number, data: bookingData) {  
+      
     const res = await fetch(`${serverURL}/guests/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, quantity })
     })
+
     if (!res.ok) {
         const { error }: { error: string } = await res.json()
         console.log(error);
     }
     
-    const session = await res.json()
-    console.log(session);
-
+    const session:{id:string,url:string} = await res.json()
     cookies().set('sId', session.id, { secure: true, httpOnly: true, maxAge: 120 })
     cookies().set('bookingData', JSON.stringify(data), { secure: true, httpOnly: true, maxAge: 120 })
     redirect(session.url)
