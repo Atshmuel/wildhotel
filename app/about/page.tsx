@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import image1 from '@/public/about-1.jpg'
-import image2 from '@/public/about-2.jpg'
+import image2 from '@/public/about-2.png'
 import { getCabinsData } from "@/app/_lib/data-service";
 
 export const revalidate = 86400;
