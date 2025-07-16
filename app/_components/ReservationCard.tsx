@@ -20,7 +20,7 @@ function ReservationCard({ booking }: { booking: Bookings }) {
     cabinName } = booking
 
   return (
-    <div className={`flex flex-col md:flex-row border border-primary-800 ${isPast(startDate) && 'opacity-80 grayscale hover:grayscale-0'}`}>
+    <div className={`flex flex-col md:flex-row border border-primary-800 ${(isPast(startDate) && !isToday(startDate)) && 'opacity-70'}`}>
       <div className='relative h-40 md:h-32 aspect-square'>
         <Image
           src={cabinImg || ""}
@@ -35,7 +35,9 @@ function ReservationCard({ booking }: { booking: Bookings }) {
           <h3 className='text-lg md:text-xl font-semibold'>
             {numNights} nights in Cabin {cabinName}
           </h3>
-          {isPast(startDate) ? (
+          {isToday(startDate) ? <span className='bg-indigo-800 text-indigo-200 h-6 px-2 md:h-7 md:px-3 uppercase text-xs font-bold flex items-center rounded-sm'>
+              today
+            </span> : isPast(startDate) ? (
             <span className='bg-yellow-800 text-yellow-200 h-6 px-2 md:h-7 md:px-3 uppercase text-xs font-bold flex items-center rounded-sm'>
               past
             </span>

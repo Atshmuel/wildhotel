@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import bg from "@/public/bg.webp";
+import bg from "@/public/bg.jpg";
 
 export default function Page() {
   return (
